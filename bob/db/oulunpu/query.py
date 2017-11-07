@@ -1,6 +1,9 @@
 from pkg_resources import resource_filename
 from bob.dap.base.database import FileListPadDatabase, FileListPadFile
 from bob.dap.face.database import VideoPadFile
+from bob.dap.face.utils import frames
+# documentation imports
+import numpy
 
 
 class File(FileListPadFile, VideoPadFile):
@@ -21,3 +24,29 @@ class Database(FileListPadDatabase):
             original_directory=original_directory,
             bio_file_class=bio_file_class,
             **kwargs)
+
+    def frames(self, padfile):
+        """Yields the number of frames and then the frames of the padfile one
+        by one.
+
+        Parameters
+        ----------
+        padfile : :any:`File`
+            The high-level replay pad file
+        dir : str
+            The directory where the original data is.
+        ext : str
+            The original extension of the video files.
+
+        Yields
+        ------
+        int
+            The number of frames. Then, it yields the frames.
+        :any:`numpy.array`
+            A frame of the video. The size is (3, 240, 320).
+        """
+        vfilename = padfile.make_path(
+            directory=self.original_directory,
+            extension=self.original_extension)
+        for retval in frames(vfilename):
+            yield retval
