@@ -58,6 +58,10 @@ setup(
       'bob.db' : [
         'oulunpu = bob.db.oulunpu.driver:Interface',
       ],
+
+      'bob.bio.database': [
+        'pad-oulunpu = bob.db.oulunpu.config:database',
+      ],
     },
 
     # Classifiers are important if you plan to distribute this package through

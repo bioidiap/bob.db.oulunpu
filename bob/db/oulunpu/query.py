@@ -15,7 +15,8 @@ class Database(FileListPadDatabase):
     """The database interface for the OULU-NPU dataset."""
 
     def __init__(self, original_directory=None,
-                 bio_file_class=None, name='oulunpu', **kwargs):
+                 bio_file_class=None, name='oulunpu',
+                 original_extension=".avi", **kwargs):
         if bio_file_class is None:
             bio_file_class = File
         filelists_directory = resource_filename(__name__, 'lists')
@@ -23,6 +24,7 @@ class Database(FileListPadDatabase):
             filelists_directory=filelists_directory, name=name,
             original_directory=original_directory,
             bio_file_class=bio_file_class,
+            original_extension=original_extension,
             **kwargs)
 
     def frames(self, padfile):
