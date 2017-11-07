@@ -1,0 +1,4 @@
+setuptools
+bob.extension
+bob.dap.base
+bob.dap.face
