@@ -45,7 +45,7 @@ class Database(FileListPadDatabase):
         int
             The number of frames. Then, it yields the frames.
         :any:`numpy.array`
-            A frame of the video. The size is (3, 240, 320).
+            A frame of the video. The size is (3, 1920, 1080).
         """
         vfilename = padfile.make_path(
             directory=self.original_directory,
