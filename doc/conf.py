@@ -132,7 +132,7 @@ pygments_style = 'sphinx'
 
 # Some variables which are useful for generated material
 project_variable = project.replace('.', '_')
-short_description = u'Example for using Bob inside a buildout project'
+short_description = u'OULU-NPU Database Access in Bob'
 owner = [u'Idiap Research Institute']
 
 
