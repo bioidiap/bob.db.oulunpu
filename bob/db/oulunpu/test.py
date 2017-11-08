@@ -17,6 +17,7 @@ def assert_nfiles(files, total, nbonafide, nattack):
 
 def test_database():
     db = Database(protocol='Protocol_1')
+    assert len(db.all_files())
     assert_nfiles(db.objects(), 1200 + 900 + 600,
                   240 + 180 + 120 + 480, 960 + 720)
     assert_nfiles(db.objects(groups='world'), 1200, 240, 960)
