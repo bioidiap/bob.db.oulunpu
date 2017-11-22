@@ -25,6 +25,8 @@ class Database(FileListPadDatabase):
             original_directory=original_directory,
             bio_file_class=bio_file_class,
             original_extension=original_extension,
+            training_depends_on_protocol=True,
+            models_depend_on_protocol=True,
             **kwargs)
 
     def frames(self, padfile):
