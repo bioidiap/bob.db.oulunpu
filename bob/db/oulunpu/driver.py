@@ -66,42 +66,7 @@ def checkfiles(args):
     return 0
 
 
-def convert_filelist_pad(path, outfolder, append, test, group):
-    outfolder = os.path.join(outfolder, group)
-    realpath = os.path.join(outfolder, 'for_real.lst')
-    attackpath = os.path.join(outfolder, 'for_attack.lst')
-    create_directories_safe(os.path.dirname(realpath))
-    conv = {'1': 'real', '2': 'print1', '3': 'print2',
-            '4': 'video_replay1', '5': 'video_replay2'}
-    with open(path) as f, \
-            open(realpath, 'w') as rf, \
-            open(attackpath, 'w') as af:
-        for line in f:
-            if test:
-                isreal = True
-            if line[0] == '+':
-                isreal = True
-            elif line[0] == '-':
-                isreal = False
-            elif not test:
-                print('ignoring line: ' + line)
-                continue
-            if test:
-                filename = line.strip()
-                client_id = 'test'
-            else:
-                _, filename = line.strip().split(',')
-                _, _, client_id, attack_type = filename.split('_')
-                attack_type = conv[attack_type]
-            filename = append + os.sep + filename
-            if isreal:
-                rf.write('{} {}\n'.format(filename, client_id))
-            else:
-                af.write('{} {} {}\n'.format(
-                    filename, client_id, attack_type))
-
-
-def convert_filelist_dap(path, outfolder, append, test, group):
+def convert_filelist(path, outfolder, prepend, group):
     if group == 'world':
         outpath = os.path.join(outfolder, 'norm', 'train_world.lst')
     else:
@@ -110,28 +75,22 @@ def convert_filelist_dap(path, outfolder, append, test, group):
         with open(os.path.join(outfolder, group, 'for_models.lst'), 'w') as f:
             pass
     create_directories_safe(os.path.dirname(outpath))
-    conv = {'1': 'real', '2': 'print1', '3': 'print2',
-            '4': 'video_replay1', '5': 'video_replay2'}
+    conv = {'1': 'real', '2': 'print/1', '3': 'print/2',
+            '4': 'video_replay/1', '5': 'video_replay/2'}
     with open(path) as f, \
             open(outpath, 'w') as wf:
         for line in f:
-            if test:
-                isreal = True
             if line[0] == '+':
                 isreal = True
             elif line[0] == '-':
                 isreal = False
-            elif not test:
+            else:
                 print('ignoring line: ' + line)
                 continue
-            if test:
-                filename = line.strip()
-                client_id = 'test'
-            else:
-                _, filename = line.strip().split(',')
-                _, _, client_id, attack_type = filename.split('_')
-                attack_type = conv[attack_type]
-            filename = os.path.join(append, filename)
+            _, filename = line.strip().split(',')
+            _, _, client_id, attack_type = filename.split('_')
+            attack_type = conv[attack_type]
+            filename = os.path.join(prepend, filename)
             if not isreal:
                 client_id = 'attack/{}/{}'.format(attack_type, client_id)
 
@@ -148,18 +107,10 @@ def create(args):
     output_dir = args.output_dir
 
     groups2 = ['world', 'dev', 'eval']
-    convert_filelist = convert_filelist_dap
 
     for grp1, grp2 in zip(['Train', 'Dev', 'Test'],
                           groups2):
-        if grp1 == 'Test':
-            part = 'OULU_NPU_Part_2'
-            append = 'OULU_NPU_Part_2/Files_2'
-            test = True
-        else:
-            part = 'OULU_NPU_Part_1'
-            append = 'OULU_NPU_Part_1/Files_1'
-            test = False
+        prepend = grp1 + '_files'
 
         for protocol in ('Protocol_1', 'Protocol_2', 'Protocol_3',
                          'Protocol_4'):
@@ -171,9 +122,9 @@ def create(args):
                     textfile = '{}_{}.txt'.format(grp1, i)
                     new_protocol = '{}_{}'.format(protocol, i)
                 convert_filelist(
-                    os.path.join(root_dir, part, protocol, textfile),
+                    os.path.join(root_dir, 'Protocols', protocol, textfile),
                     os.path.join(output_dir, new_protocol),
-                    append, test, grp2)
+                    prepend, grp2)
                 if protocol in ('Protocol_1', 'Protocol_2'):
                     break
 
