@@ -54,3 +54,6 @@ class Database(FileListPadDatabase):
             extension=self.original_extension)
         for retval in frames(vfilename):
             yield retval
+
+    def frame_size(self):
+        return (3, 1920, 1080)
