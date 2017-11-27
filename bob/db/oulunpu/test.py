@@ -3,7 +3,9 @@
 
 """Test Units
 """
-from bob.db.oulunpu import Database
+from bob.db.oulunpu.config import database as db
+import os
+import nose
 
 
 def assert_nfiles(files, total, nbonafide, nattack):
@@ -16,32 +18,61 @@ def assert_nfiles(files, total, nbonafide, nattack):
 
 
 def test_database():
-    db = Database(protocol='Protocol_1')
-    assert len(db.all_files())
-    assert_nfiles(db.objects(), 1200 + 900 + 600,
-                  240 + 180 + 120 + 480, 960 + 720)
-    assert_nfiles(db.objects(groups='world'), 1200, 240, 960)
-    assert_nfiles(db.objects(groups='dev'), 900, 180, 720)
-    assert_nfiles(db.objects(groups='eval'), 600, 120 + 480, 0)
+    protocol = 'Protocol_1'
+    db.protocol = protocol
+    assert len(db.all_files()[0])
+    assert len(db.all_files()[1])
+    assert_nfiles(db.objects(protocol=protocol), 1200 + 900 + 600,
+                  240 + 180 + 120, 960 + 720 + 480)
+    assert_nfiles(db.objects(protocol=protocol,
+                             groups='train'), 1200, 240, 960)
+    assert_nfiles(db.objects(protocol=protocol, groups='dev'), 900, 180, 720)
+    assert_nfiles(db.objects(protocol=protocol, groups='eval'), 600, 120, 480)
 
-    db = Database(protocol='Protocol_2')
-    assert_nfiles(db.objects(), 1080 * 2 + 810,
-                  360 + 270 + 360 + 720, 720 + 540)
-    assert_nfiles(db.objects(groups='world'), 1080, 360, 720)
-    assert_nfiles(db.objects(groups='dev'), 810, 270, 540)
-    assert_nfiles(db.objects(groups='eval'), 1080, 360 + 720, 0)
+    protocol = 'Protocol_2'
+    db.protocol = protocol
+    assert_nfiles(db.objects(protocol=protocol), 1080 * 2 + 810,
+                  360 + 270 + 360, 720 + 540 + 720)
+    assert_nfiles(db.objects(protocol=protocol,
+                             groups='train'), 1080, 360, 720)
+    assert_nfiles(db.objects(protocol=protocol,
+                             groups='dev'), 810, 270, 540)
+    assert_nfiles(db.objects(protocol=protocol,
+                             groups='eval'), 1080, 360, 720)
 
     for i in range(1, 7):
-        db = Database(protocol='Protocol_3_{}'.format(i))
-        assert_nfiles(db.objects(), 1500 + 1125 + 300,
-                      300 + 225 + 60 + 240, 1200 + 900)
-        assert_nfiles(db.objects(groups='world'), 1500, 300, 1200)
-        assert_nfiles(db.objects(groups='dev'), 1125, 225, 900)
-        assert_nfiles(db.objects(groups='eval'), 300, 60 + 240, 0)
+        protocol = 'Protocol_3_{}'.format(i)
+        db.protocol = protocol
+        assert_nfiles(db.objects(protocol=protocol), 1500 + 1125 + 300,
+                      300 + 225 + 60, 1200 + 900 + 240)
+        assert_nfiles(db.objects(protocol=protocol,
+                                 groups='train'), 1500, 300, 1200)
+        assert_nfiles(db.objects(protocol=protocol,
+                                 groups='dev'), 1125, 225, 900)
+        assert_nfiles(db.objects(protocol=protocol,
+                                 groups='eval'), 300, 60, 240)
 
-        db = Database(protocol='Protocol_4_{}'.format(i))
-        assert_nfiles(db.objects(), 600 + 450 + 60,
-                      200 + 150 + 20 + 40, 400 + 300)
-        assert_nfiles(db.objects(groups='world'), 600, 200, 400)
-        assert_nfiles(db.objects(groups='dev'), 450, 150, 300)
-        assert_nfiles(db.objects(groups='eval'), 60, 20 + 40, 0)
+        protocol = 'Protocol_4_{}'.format(i)
+        db.protocol = protocol
+        assert_nfiles(db.objects(protocol=protocol), 600 + 450 + 60,
+                      200 + 150 + 20, 400 + 300 + 40)
+        assert_nfiles(db.objects(protocol=protocol,
+                                 groups='train'), 600, 200, 400)
+        assert_nfiles(db.objects(protocol=protocol,
+                                 groups='dev'), 450, 150, 300)
+        assert_nfiles(db.objects(protocol=protocol,
+                                 groups='eval'), 60, 20, 40)
+
+
+def test_frames():
+    protocol = 'Protocol_1'
+    db.protocol = protocol
+    db.replace_directories(os.path.expanduser('~/.bob_bio_databases.txt'))
+    if db.original_directory == '[OULUNPU_DIRECTORY]':
+        nose.SkipTest(
+            "Please update '[OULUNPU_DIRECTORY]' in your "
+            "'~/.bob_bio_databases.txt' to point to the directory where the "
+            "database's raw data are. This way we can test more features of "
+            "the database interface.")
+    padfile = db.all_files()[0][0]
+    assert db.number_of_frames(padfile) == 151, db.number_of_frames(padfile)

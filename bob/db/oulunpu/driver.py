@@ -67,23 +67,21 @@ def checkfiles(args):
 
 
 def convert_filelist(path, outfolder, prepend, group):
-    if group == 'world':
-        outpath = os.path.join(outfolder, 'norm', 'train_world.lst')
-    else:
-        outpath = os.path.join(outfolder, group, 'for_scores.lst')
-        # create the empty 'for_models.lst' file.
-        with open(os.path.join(outfolder, group, 'for_models.lst'), 'w') as f:
-            pass
-    create_directories_safe(os.path.dirname(outpath))
+    outpaths = [
+        os.path.join(outfolder, group, 'for_real.lst'),
+        os.path.join(outfolder, group, 'for_attack.lst'),
+    ]
+    create_directories_safe(os.path.dirname(outpaths[0]))
     conv = {'1': 'real', '2': 'print/1', '3': 'print/2',
             '4': 'video_replay/1', '5': 'video_replay/2'}
     with open(path) as f, \
-            open(outpath, 'w') as wf:
+            open(outpaths[0], 'w') as wrf, \
+            open(outpaths[1], 'w') as waf:
         for line in f:
             if line[0] == '+':
-                isreal = True
+                is_real = True
             elif line[0] == '-':
-                isreal = False
+                is_real = False
             else:
                 print('ignoring line: ' + line)
                 continue
@@ -91,13 +89,12 @@ def convert_filelist(path, outfolder, prepend, group):
             _, _, client_id, attack_type = filename.split('_')
             attack_type = conv[attack_type]
             filename = os.path.join(prepend, filename)
-            if not isreal:
-                client_id = 'attack/{}/{}'.format(attack_type, client_id)
 
-            if group == 'world':
-                wf.write('{} {}\n'.format(filename, client_id))
+            if is_real:
+                wrf.write('{} {}\n'.format(filename, client_id))
             else:
-                wf.write('{} model model {}\n'.format(filename, client_id))
+                waf.write('{} {} {}\n'.format(
+                    filename, client_id, attack_type))
 
 
 def create(args):
@@ -106,7 +103,7 @@ def create(args):
     root_dir = args.root_dir
     output_dir = args.output_dir
 
-    groups2 = ['world', 'dev', 'eval']
+    groups2 = ['train', 'dev', 'eval']
 
     for grp1, grp2 in zip(['Train', 'Dev', 'Test'],
                           groups2):
