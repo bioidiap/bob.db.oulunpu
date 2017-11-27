@@ -6,8 +6,9 @@
  OULU-NPU Database Access in Bob
 =================================
 
-This package provides an interface to the `OULU-NPU`_ database.
-The original data files need to be downloaded separately.
+This package provides an interface to the `OULU-NPU`_ - a mobile face
+presentation attack database with real-world variations database. The original
+data files need to be downloaded separately.
 
 If you use this database, please cite the following publication::
 
