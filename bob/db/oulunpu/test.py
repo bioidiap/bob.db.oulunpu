@@ -69,7 +69,7 @@ def test_frames():
     db.protocol = protocol
     db.replace_directories(os.path.expanduser('~/.bob_bio_databases.txt'))
     if db.original_directory == '[OULUNPU_DIRECTORY]':
-        nose.SkipTest(
+        raise nose.SkipTest(
             "Please update '[OULUNPU_DIRECTORY]' in your "
             "'~/.bob_bio_databases.txt' to point to the directory where the "
             "database's raw data are. This way we can test more features of "

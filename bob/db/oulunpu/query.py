@@ -34,10 +34,6 @@ class Database(FileListPadDatabase):
         ----------
         padfile : :any:`File`
             The high-level pad file
-        dir : str
-            The directory where the original data is.
-        ext : str
-            The original extension of the video files.
 
         Yields
         ------
