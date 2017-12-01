@@ -4,7 +4,6 @@
 """Test Units
 """
 from bob.db.oulunpu.config import database as db
-import os
 import nose
 
 
@@ -67,12 +66,10 @@ def test_database():
 def test_frames():
     protocol = 'Protocol_1'
     db.protocol = protocol
-    db.replace_directories(os.path.expanduser('~/.bob_bio_databases.txt'))
-    if db.original_directory == '[OULUNPU_DIRECTORY]':
+    if db.original_directory is None:
         raise nose.SkipTest(
-            "Please update '[OULUNPU_DIRECTORY]' in your "
-            "'~/.bob_bio_databases.txt' to point to the directory where the "
-            "database's raw data are. This way we can test more features of "
-            "the database interface.")
+            "Please configure bob.db.oulunpu (refer to package documentation) "
+            "to point to the directory where the database's raw data are. This"
+            " way we can test more features of the database interface.")
     padfile = db.all_files()[0][0]
     assert db.number_of_frames(padfile) == 151, db.number_of_frames(padfile)

@@ -2,6 +2,7 @@ from pkg_resources import resource_filename
 from bob.pad.base.database import FileListPadDatabase
 from bob.pad.face.database import VideoPadFile
 from bob.pad.face.utils import frames, number_of_frames
+from bob.extension import rc
 # documentation imports
 import numpy
 
@@ -14,7 +15,7 @@ class File(VideoPadFile):
 class Database(FileListPadDatabase):
     """The database interface for the OULU-NPU dataset."""
 
-    def __init__(self, original_directory=None,
+    def __init__(self, original_directory=rc['bob.db.oulunpu.directory'],
                  name='oulunpu', bio_file_class=None,
                  original_extension=".avi", **kwargs):
         if bio_file_class is None:

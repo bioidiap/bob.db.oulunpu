@@ -8,7 +8,10 @@
 
 This package provides an interface to the `OULU-NPU`_ - a mobile face
 presentation attack database with real-world variations database. The original
-data files need to be downloaded separately.
+data files need to be downloaded separately.After you have downloaded the
+dataset, you need to configure bob.db.oulunpu to find the dataset::
+
+    $ bob config set bob.db.oulunpu.directory /path/to/downloaded/dataset
 
 If you use this database, please cite the following publication::
 
