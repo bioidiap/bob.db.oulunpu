@@ -59,8 +59,8 @@ setup(
         'oulunpu = bob.db.oulunpu.driver:Interface',
       ],
 
-      'bob.bio.database': [
-        'pad-oulunpu = bob.db.oulunpu.config:database',
+      'bob.pad.database': [
+        'oulunpu = bob.db.oulunpu.config:database',
       ],
     },
 
