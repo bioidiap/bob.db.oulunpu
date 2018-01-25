@@ -64,7 +64,7 @@ setup(
         ],
 
         'bob.bio.config': [
-            'oulunpu = bob.db.oulunpu.config:database',
+            'oulunpu = bob.db.oulunpu.config',
         ],
     },
 

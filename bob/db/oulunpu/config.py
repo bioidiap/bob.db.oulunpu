@@ -1,4 +1,4 @@
 #!/usr/bin/env python
 
-from bob.db.oulunpu import Database
+from . import Database
 database = Database(protocol='Protocol_1')
