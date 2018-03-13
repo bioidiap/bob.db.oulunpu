@@ -3,10 +3,7 @@ from bob.pad.base.database import FileListPadDatabase
 from bob.pad.face.database import VideoPadFile
 from bob.extension import rc
 from bob.io.video import reader
-import numpy as np
-
-OULUNPU_FRAME_SHAPE = (3, 1920, 1080)
-"Shape of the video frames in the oulunpu database."
+from . import OULUNPU_FRAME_SHAPE
 
 
 class File(VideoPadFile):

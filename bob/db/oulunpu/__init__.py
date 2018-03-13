@@ -1,3 +1,6 @@
+OULUNPU_FRAME_SHAPE = (3, 1920, 1080)
+"Shape of the video frames in the oulunpu database."
+
 from .query import Database, File
 
 
