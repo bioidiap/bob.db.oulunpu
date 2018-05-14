@@ -2,9 +2,9 @@
 .. Tue Nov  7 16:30:33 CET 2017
 
 .. image:: https://img.shields.io/badge/docs-stable-yellow.svg
-   :target: http://beatubulatest.lab.idiap.ch/private/docs/bob/bob.db.oulunpu/stable/index.html
+   :target: https://www.idiap.ch/software/bob/docs/bob/bob.db.oulunpu/stable/index.html
 .. image:: https://img.shields.io/badge/docs-latest-orange.svg
-   :target: http://beatubulatest.lab.idiap.ch/private/docs/bob/bob.db.oulunpu/master/index.html
+   :target: https://www.idiap.ch/software/bob/docs/bob/bob.db.oulunpu/master/index.html
 .. image:: https://gitlab.idiap.ch/bob/bob.db.oulunpu/badges/master/build.svg
    :target: https://gitlab.idiap.ch/bob/bob.db.oulunpu/commits/master
 .. image:: https://gitlab.idiap.ch/bob/bob.db.oulunpu/badges/master/coverage.svg
