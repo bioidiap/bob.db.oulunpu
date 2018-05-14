@@ -18,7 +18,8 @@ class File(VideoPadFile):
         :any:`numpy.array`
             A frame of the video. The size is (3, 1920, 1080).
         """
-        vfilename = self.make_path(directory=self.original_directory)
+        vfilename = self.make_path(
+            directory=self.original_directory, extension='.avi')
         return iter(reader(vfilename))
 
     @property
@@ -30,7 +31,8 @@ class File(VideoPadFile):
         int
             The number of frames.
         """
-        vfilename = self.make_path(directory=self.original_directory)
+        vfilename = self.make_path(
+            directory=self.original_directory, extension='.avi')
         return reader(vfilename).number_of_frames
 
     @property
