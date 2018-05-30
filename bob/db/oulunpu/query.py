@@ -46,6 +46,32 @@ class File(VideoPadFile):
         """
         return OULUNPU_FRAME_SHAPE
 
+    @property
+    def annotations(self):
+        """Reads the annotations
+
+        Returns
+        -------
+        dict
+            The annotations as a dictionary, e.g.:
+            ``{'0': {'reye':(re_y,re_x), 'leye':(le_y,le_x)}, ...}``
+        """
+        path = self.make_path(
+            directory=self.original_directory, extension='.txt')
+        annotations = {}
+        with open(path) as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                num_frame, x_eye_left, y_eye_left, x_eye_right, y_eye_right = \
+                    line.split(',')
+                annotations[num_frame] = {
+                    'reye': (int(y_eye_right), int(x_eye_right)),
+                    'leye': (int(y_eye_left), int(x_eye_left)),
+                }
+        return annotations
+
 
 class Database(FileListPadDatabase):
     """The database interface for the OULU-NPU dataset."""
@@ -61,6 +87,7 @@ class Database(FileListPadDatabase):
             original_directory=original_directory,
             pad_file_class=pad_file_class,
             original_extension=original_extension,
+            training_depends_on_protocol=True,
             **kwargs)
 
     def objects(self, groups=None, protocol=None, purposes=None,
@@ -83,31 +110,4 @@ class Database(FileListPadDatabase):
         return OULUNPU_FRAME_SHAPE
 
     def annotations(self, padfile):
-        """Reads the annotations for the given padfile.
-
-        Parameters
-        ----------
-        padfile : :any:`File`
-            The file object for which the annotations should be read.
-
-        Returns
-        -------
-        dict
-            The annotations as a dictionary, e.g.:
-            ``{'0': {'reye':(re_y,re_x), 'leye':(le_y,le_x)}, ...}``
-        """
-        path = padfile.make_path(
-            directory=self.original_directory, extension='.txt')
-        annotations = {}
-        with open(path) as f:
-            for line in f:
-                line = line.strip()
-                if not line:
-                    continue
-                num_frame, x_eye_left, y_eye_left, x_eye_right, y_eye_right = \
-                    line.split(',')
-                annotations[num_frame] = {
-                    'reye': (int(y_eye_right), int(x_eye_right)),
-                    'leye': (int(y_eye_left), int(x_eye_left)),
-                }
-        return annotations
+        return padfile.annotations
