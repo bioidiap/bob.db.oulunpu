@@ -116,6 +116,7 @@ class Database(FileListPadDatabase):
 
     def objects(self, groups=None, protocol=None, purposes=None,
                 model_ids=None, classes=None, **kwargs):
+        """Returns the requested samples."""
         files = super(Database, self).objects(
             groups=groups, protocol=protocol, purposes=purposes,
             model_ids=model_ids, classes=classes, **kwargs)
