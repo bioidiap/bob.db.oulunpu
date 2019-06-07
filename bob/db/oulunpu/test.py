@@ -73,3 +73,17 @@ def test_frames():
             " way we can test more features of the database interface.")
     padfile = db.all_files()[0][0]
     assert db.number_of_frames(padfile) == 151, db.number_of_frames(padfile)
+
+
+def test_annotations():
+    protocol = 'Protocol_1'
+    db.protocol = protocol
+    if db.original_directory is None:
+        raise nose.SkipTest(
+            "Please configure bob.db.oulunpu (refer to package documentation) "
+            "to point to the directory where the database's raw data are. This"
+            " way we can test more features of the database interface.")
+    padfile = db.all_files()[0][0]
+    annot = padfile.annotations['0']
+    # leye x must be higher than reye x to conform to Bob format
+    assert annot['leye'][1] > annot['reye'][1], annot
