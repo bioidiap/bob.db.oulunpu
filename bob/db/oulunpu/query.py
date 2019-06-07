@@ -65,7 +65,7 @@ class File(VideoPadFile):
                 line = line.strip()
                 if not line:
                     continue
-                num_frame, x_eye_left, y_eye_left, x_eye_right, y_eye_right = \
+                num_frame, x_eye_right, y_eye_right, x_eye_left, y_eye_left = \
                     line.split(',')
                 annotations[num_frame] = {
                     'reye': (int(y_eye_right), int(x_eye_right)),
