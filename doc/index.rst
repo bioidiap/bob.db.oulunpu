@@ -13,6 +13,9 @@ dataset, you need to configure bob.db.oulunpu to find the dataset::
 
     $ bob config set bob.db.oulunpu.directory /path/to/downloaded/dataset
 
+Please see Bob's :ref:`bob.extension.rc` for more information about the ``bob config``
+command.
+
 If you use this database, please cite the following publication::
 
     @INPROCEEDINGS{OULU_NPU_2017,
